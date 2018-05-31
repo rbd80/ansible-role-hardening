@@ -34,7 +34,7 @@
   package:
     name: "epel-release"
     state: latest
-  when: ansible_os_family == "RedHat" and (not ansible_distribution == "Fedora" or ansible_distribution != "Amazon" )
+  when: ansible_os_family == "RedHat" and (not ansible_distribution == "Fedora" or ansible_distribution == "Amazon" )
   tags:
     - yum
     - packages
