@@ -3,7 +3,7 @@
 - name: restart auditd
   systemd:
     name: auditd
-    state: restarted
+    state: reload
 
 - name: generate auditd
   become: 'yes'
