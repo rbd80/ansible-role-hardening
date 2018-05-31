@@ -34,22 +34,28 @@
   package:
     name: "epel-release"
     state: latest
-  when: ansible_os_family == "RedHat" and ansible_distribution != "Amazon" and (not ansible_distribution == "Fedora" )
+  when: ansible_os_family == "RedHat" and ansible_distribution != "Amazon" and ansible_distribution != "Fedora"
   tags:
     - yum
     - packages
     - security
 
-- name: install epel for Amazon
-  yum:
-    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-    state: latest
-    ignore_errors: yes
+- name: Enable EPEL
+  command: yum-config-manager --enable epel
   when: ansible_distribution == "Amazon"
-  tags:
-    - yum
-    - packages
-    - security
+
+#- name: Add EPEL repo
+#  yum_repository:
+#    name: epel_repo
+#    description: EPEL YUM repo
+#    baseurl:  https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+#  when: ansible_distribution == "Amazon"
+
+- name: Import Fedora GPG key.
+  rpm_key:
+    key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7Server
+    state: present
+  when: ansible_distribution == "Amazon"
 
 - name: redhat family package installation
   become: 'yes'
@@ -59,7 +65,23 @@
     state: latest
   with_items:
     - "{{ packages_redhat }}"
-  when: ansible_os_family == "RedHat"
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  notify:
+    - enable haveged
+  tags:
+    - yum
+    - packages
+    - security
+
+- name: Amazon family package installation
+  become: 'yes'
+  become_method: sudo
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "{{ packages_amazon }}"
+  when: ansible_distribution == "Amazon"
   notify:
     - enable haveged
   tags:
@@ -78,7 +100,7 @@
     - "{{ packages_blacklist }}"
   environment:
     PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-  when: ansible_os_family == "Debian"
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags:
     - apt
     - packages

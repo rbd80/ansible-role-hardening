@@ -30,6 +30,7 @@
     backrefs: 'yes'
   notify:
     - rkhunter propupd
+  when: ansible_distribution != "Amazon"
   tags:
     - packages
     - rkhunter
@@ -48,6 +49,7 @@
     backrefs: 'yes'
   notify:
     - rkhunter propupd
+  when: ansible_distribution != "Amazon"
   tags:
     - packages
     - rkhunter
