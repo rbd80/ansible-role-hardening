@@ -19,6 +19,7 @@
   become_method: sudo
   command: prelink -ua
   ignore_errors: true
+  when: ansible_os_family == "RedHat"
   tags:
     - prelink
     - security
