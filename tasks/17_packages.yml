@@ -46,10 +46,10 @@
     state: latest
     ignore_errors: yes
   when: ansible_distribution == "Amazon"
-    tags:
-      - yum
-      - packages
-      - security
+  tags:
+    - yum
+    - packages
+    - security
 
 - name: redhat family package installation
   become: 'yes'
