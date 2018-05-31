@@ -41,15 +41,15 @@
     - security
 
 - name: install epel for Amazon
-    yum:
-      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-      state: latest
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: latest
     ignore_errors: yes
-    when: ansible_distribution == "Amazon"
-      tags:
-        - yum
-        - packages
-        - security
+  when: ansible_distribution == "Amazon"
+    tags:
+      - yum
+      - packages
+      - security
 
 - name: redhat family package installation
   become: 'yes'
