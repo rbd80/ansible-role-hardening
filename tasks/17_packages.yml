@@ -40,23 +40,6 @@
     - packages
     - security
 
-- name: Enable EPEL
-  command: yum-config-manager --enable epel
-  when: ansible_distribution == "Amazon"
-
-#- name: Add EPEL repo
-#  yum_repository:
-#    name: epel_repo
-#    description: EPEL YUM repo
-#    baseurl:  https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-#  when: ansible_distribution == "Amazon"
-
-- name: Import Fedora GPG key.
-  rpm_key:
-    key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7Server
-    state: present
-  when: ansible_distribution == "Amazon"
-
 - name: redhat family package installation
   become: 'yes'
   become_method: sudo
