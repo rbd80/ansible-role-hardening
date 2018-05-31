@@ -1,9 +1,9 @@
 ---
 # https://github.com/ansible/ansible/issues/22171
 - name: restart auditd
-  become: 'yes'
-  become_method: sudo
-  command: service auditd restart
+  systemd:
+    name: auditd
+    state: restarted
 
 - name: generate auditd
   become: 'yes'
@@ -106,6 +106,7 @@
     name: haveged
     enabled: 'yes'
     state: started
+  when: ansible_distribution != "Amazon"
 
 - name: update authconfig
   become: 'yes'
