@@ -11,14 +11,33 @@
 # UBTU-16-010010
 # UBTU-16-010050
 
-- name: debian family package installation.
-  package: name={{ item }} state=present
-  with_items: "{{ packages_debian }}"
+- name: debian family package installation
+  become: 'yes'
+  become_method: sudo
+  apt:
+    name: "{{ item }}"
+    state: latest
+    install_recommends: 'no'
+  with_items:
+    - "{{ packages_debian }}"
   when: ansible_os_family == "Debian"
   tags:
     - apt
     - packages
     - security
+
+- name: debian debsums having error
+  become: 'yes'
+  become_method: sudo
+  apt:
+    name: "debsums"
+    state: latest
+  when: ansible_os_family == "Debian"
+  tags:
+    - apt
+    - packages
+    - security
+
 
 - name: fedora epel installation
   become: 'yes'
