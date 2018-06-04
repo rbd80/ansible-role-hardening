@@ -16,15 +16,13 @@
     name: "{{ item }}"
     state: latest
     update_cache: yes
-  environment:
-    PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   with_items:
       - "{{ packages_debian }}"
-    when: ansible_os_family == "Debian"
-    tags:
-      - apt
-      - packages
-      - security
+  when: ansible_os_family == "Debian"
+  tags:
+    - apt
+    - packages
+    - security
 
 - name: fedora epel installation
   become: 'yes'
