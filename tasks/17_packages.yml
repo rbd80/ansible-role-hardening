@@ -12,21 +12,19 @@
 # UBTU-16-010050
 
 - name: debian family package installation
-  become: 'yes'
-  become_method: sudo
   apt:
     name: "{{ item }}"
     state: latest
-    install_recommends: 'no'
+    update_cache: yes
   environment:
     PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   with_items:
-    - "{{ packages_debian }}"
-  when: ansible_os_family == "Debian"
-  tags:
-    - apt
-    - packages
-    - security
+      - "{{ packages_debian }}"
+    when: ansible_os_family == "Debian"
+    tags:
+      - apt
+      - packages
+      - security
 
 - name: fedora epel installation
   become: 'yes'
