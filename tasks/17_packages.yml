@@ -11,11 +11,17 @@
 # UBTU-16-010010
 # UBTU-16-010050
 
+- name: Declare name of package.
+  debug:
+    msg: Now building {{ packages_debian }}.
+
 - name: debian family package installation
   apt:
     name: "{{ item }}"
-    state: latest
+    state: present
     update_cache: yes
+    cache_valid_time: 3600
+  sudo: yes
   with_items:
       - "{{ packages_debian }}"
   when: ansible_os_family == "Debian"
