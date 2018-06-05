@@ -15,6 +15,21 @@
   debug:
     msg: Now building {{ packages_debian }}.
 
+- name: debian family package installation
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  sudo: yes
+  with_items:
+      - "{{ packages_debian }}"
+  when: ansible_os_family == "Debian"
+  tags:
+    - apt
+    - packages
+    - security
+
 - name: fedora epel installation
   become: 'yes'
   become_method: sudo

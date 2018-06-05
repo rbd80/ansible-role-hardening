@@ -33,15 +33,17 @@
     - cron
     - security
 
+
+#    name: atd
 # CCE-80345-2
 - name: mask atd
   become: 'yes'
   become_method: sudo
   systemd:
-    name: atd
+    name: at
     masked: 'yes'
     enabled: 'no'
-    state: stopped
+    state: '{{ "present" if atd_enabled|bool else "absent" }}'
   ignore_errors: 'yes'
   tags:
     - at
